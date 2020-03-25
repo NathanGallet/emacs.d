@@ -1,0 +1,5 @@
+auto-save-list/*
+elpa/*
+.cache/*
+recentf
+projectile-bookmarks.eld
