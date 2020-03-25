@@ -1,5 +1,9 @@
 auto-save-list/*
 elpa/*
+transient/*
 .cache/*
+
+
 recentf
 projectile-bookmarks.eld
+

@@ -6,6 +6,7 @@
 (tool-bar-mode -1)
 (tooltip-mode -1)
 (menu-bar-mode -1)
+(global-hl-line-mode 1)
 
 ;; Show matching parens
 (setq show-paren-delay 0)
@@ -23,7 +24,7 @@
 (add-to-list 'default-frame-alist '(font . "FiraCode"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Packages ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Package configs
 (require 'package)
@@ -135,10 +136,25 @@
 		scroll-margin 5)
 	    (smooth-scrolling-mode 1))
 
+;; Front page
 (use-package dashboard
 	    :ensure t
 	    :config
 	    (dashboard-setup-startup-hook))
+
+(use-package nlinum-relative
+	    :init
+	    (setq nlinum-relative-redisplay-delay 0) 
+	    :config
+	    (nlinum-relative-setup-evil)
+	    (add-hook 'prog-mode-hook 'nlinum-relative-mode))
+
+(use-package doom-modeline
+	    :ensure t
+	    :init (doom-modeline-mode 1))
+
+(use-package evil-magit
+            :init (evil-magit-init))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; KEYBINDING ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -178,6 +194,8 @@
 		       "'"  '(ansi-term :which-key "open terminal")
 		       "feR"  '(reload-init-file :which-key "reload config")
 		       "fed"  '(open-init-file :which-key "open config")
+		       ;; Magit 
+		       "gs" '(magit :which-key "git status")
 		       ))
 
 ;; Set keymap in helm mini-buffer
@@ -186,7 +204,9 @@
 (define-key helm-map (kbd "C-l")  'helm-maybe-exit-minibuffer)
 (define-key minibuffer-local-map (kbd "ESC") 'keyboard-escape-quit)
 
-;; Private functions
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Private functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun reload-init-file ()
   (interactive)
   (load-file user-init-file))
@@ -204,7 +224,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (dashboard helm-projectile smooth-scrolling evil-surround evil-collection evil use-package))))
+    (evil-magit magit all-the-icons doom-modeline nlinum-relative dashboard helm-projectile smooth-scrolling evil-surround evil-collection evil use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
